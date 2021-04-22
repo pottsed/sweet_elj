@@ -24,6 +24,22 @@ class M_home extends CI_Model
         return $this->db->get()->result();
     }
 
+    public function get_filter($where,$min,$max)
+    {
+        $min = strlen($min) > 0 ? $min : "";
+        $max = strlen($max) > 0 ? $max : "";
+        $this->db->select('*');
+        $this->db->from('tb_barang');
+        $this->db->join('tb_kategori', 'tb_kategori.id_kategori = tb_barang.id_kategori', 'left');
+        $this->db->join('tb_bahan', 'tb_bahan.id_bahan = tb_barang.id_bahan', 'left');
+        $this->db->where($where);
+        // strlen($min) > 0 ? $this->db->where('tb_barang.harga >= "'.$min. '"') : "";
+        // strlen($max) > 0 ? $this->db->where('tb_barang.harga <= "'.$max. '"') : "";
+
+        print_r( $this->db->get());exit;
+        return $this->db->get()->row();
+    }
+
     public function detail_brg($id_barang)
     {
         $this->db->select('*');

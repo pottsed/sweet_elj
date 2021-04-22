@@ -9,6 +9,8 @@ class Home extends CI_Controller
     {
         parent::__construct();
         $this->load->model('m_home');
+        $this->load->model('m_bahan');
+        $this->load->model('m_kategori');
         $this->load->model('m_rating');
 
         $this->load->helper('url');
@@ -26,7 +28,25 @@ class Home extends CI_Controller
         $data = array(
             'tittle' => 'Home',
             'barang' => $this->m_home->get_all_data(),
+            'filter_kategori' => $this->m_kategori->get_all_data(),
+            'filter_bahan' => $this->m_bahan->get_all_data(),
             'isi'   => 'v_home'
+
+        );
+        $this->load->view('layout/v_wrapper_frontend', $data, FALSE);
+    }
+    public function filter()
+    {
+        if (strlen($_GET['kategori']) > 0) { $where['tb_kategori.id_kategori']=$_GET['kategori'];}
+        if (strlen($_GET['bahan']) > 0) { $where['tb_bahan.id_bahan']=$_GET['bahan'];}
+        $min = strlen($_GET['min']) > 0 ? $_GET['min'] : "";
+        $max = strlen($_GET['max']) > 0 ? $_GET['max'] : "";
+        $data = array(
+            'tittle' => 'Fiter',
+            'barang' => $this->m_home->get_filter($where,$min,$max),
+            'filter_kategori' => $this->m_kategori->get_all_data(),
+            'filter_bahan' => $this->m_bahan->get_all_data(),
+            'isi'   => 'v_filter'
 
         );
         $this->load->view('layout/v_wrapper_frontend', $data, FALSE);
