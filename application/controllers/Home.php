@@ -37,10 +37,10 @@ class Home extends CI_Controller
     }
     public function filter()
     {
-        if (strlen($_GET['kategori']) > 0) { $where['tb_kategori.id_kategori']=$_GET['kategori'];}
-        if (strlen($_GET['bahan']) > 0) { $where['tb_bahan.id_bahan']=$_GET['bahan'];}
-        $min = strlen($_GET['min']) > 0 ? $_GET['min'] : "";
-        $max = strlen($_GET['max']) > 0 ? $_GET['max'] : "";
+        $id_kategori    = strlen($_GET['kategori']) > 0 ? $_GET['kategori'] : null;
+        $id_bahan       = strlen($_GET['bahan']) > 0 ? $_GET['bahan'] : null;
+        $min            = strlen($_GET['min']) > 0 ? $_GET['min'] : null;
+        $max            = strlen($_GET['max']) > 0 ? $_GET['max'] : null;
         $data = array(
             'tittle' => 'Fiter',
             'barang' => $this->m_home->get_filter($where,$min,$max),

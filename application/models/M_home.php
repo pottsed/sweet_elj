@@ -24,7 +24,7 @@ class M_home extends CI_Model
         return $this->db->get()->result();
     }
 
-    public function get_filter($where,$min,$max)
+    public function get_filter($id_kategori,$id_bahan,$min,$max)
     {
         $min = strlen($min) > 0 ? $min : "";
         $max = strlen($max) > 0 ? $max : "";

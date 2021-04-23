@@ -54,7 +54,7 @@
                     <div class="form-group">
                         <label>Kategori</label>
                         <select name="kategori" class="custom-select">
-                            <option value="all">All</option>
+                            <option value="">All</option>
                             <?php foreach ($filter_kategori as $row): ?>
                                 <option value="<?php echo $row->id_kategori ?>"><?php echo ucwords($row->nama_kategori) ?></option>
                             <?php endforeach ?>
@@ -63,7 +63,7 @@
                     <div class="form-group">
                         <label>Bahan</label>
                         <select name="bahan" class="custom-select">
-                            <option value="all">All</option>
+                            <option value="">All</option>
                             <?php foreach ($filter_bahan as $row): ?>
                                 <option value="<?php echo $row->id_bahan ?>"><?php echo ucwords($row->nama_bahan) ?></option>
                             <?php endforeach ?>
