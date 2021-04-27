@@ -88,11 +88,10 @@
 <div class="card card-solid mt-2 mb-2">
     <div class="card-body pb-0">
         <div class="row">
-            <?php foreach ($barang as $key => $value) { ?>
+            <?php foreach ($barang as $row => $value) { ?>
                 <div class="col-sm-4">
                     <?php
                     echo form_open('belanja/add');
-                    //nama bawaan dri CI 'Adding an Item to The Cart'
                     echo form_hidden('id', $value->id_barang);
                     echo form_hidden('qty', 1);
                     echo form_hidden('price', $value->harga);

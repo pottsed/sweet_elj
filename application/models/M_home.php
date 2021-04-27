@@ -24,20 +24,39 @@ class M_home extends CI_Model
         return $this->db->get()->result();
     }
 
-    public function get_filter($id_kategori,$id_bahan,$min,$max)
+    public function get_filter($id_kategori=null,$id_bahan=null,$min=0,$max=0)
     {
-        $min = strlen($min) > 0 ? $min : "";
-        $max = strlen($max) > 0 ? $max : "";
-        $this->db->select('*');
-        $this->db->from('tb_barang');
-        $this->db->join('tb_kategori', 'tb_kategori.id_kategori = tb_barang.id_kategori', 'left');
-        $this->db->join('tb_bahan', 'tb_bahan.id_bahan = tb_barang.id_bahan', 'left');
-        $this->db->where($where);
-        // strlen($min) > 0 ? $this->db->where('tb_barang.harga >= "'.$min. '"') : "";
-        // strlen($max) > 0 ? $this->db->where('tb_barang.harga <= "'.$max. '"') : "";
-
-        print_r( $this->db->get());exit;
-        return $this->db->get()->row();
+        $where="";
+        $nowhere=0;
+        if ($id_kategori !== null) {
+            $where .= $nowhere > 0 ? " and " : "";
+            $where .= " tb_barang.id_kategori = ".$id_kategori." ";   
+            $nowhere++;
+        }
+        if ($id_bahan !== null) {
+            $where .= $nowhere > 0 ? " and " : "";
+            $where .= " tb_barang.id_bahan = ".$id_bahan." ";   
+            $nowhere++;
+        }
+        if ($min !== null) {
+            $where .= $nowhere > 0 ? " and " : "";
+            $where .= " tb_barang.harga >= ".$min." ";   
+            $nowhere++;
+        }
+        if ($max !== null) {
+            $where .= $nowhere > 0 ? " and " : "";
+            $where .= " tb_barang.harga <= ".$max." ";   
+            $nowhere++;
+        }
+        $where = $nowhere > 0 ? " where ".$where : "";
+        $sql="
+        SELECT * FROM tb_barang
+        LEFT JOIN tb_kategori on tb_kategori.id_kategori = tb_barang.id_kategori
+        LEFT JOIN tb_bahan on tb_bahan.id_bahan = tb_barang.id_bahan
+        $where
+        ";
+        // print_r($sql);exit;
+        return $this->db->query($sql)->result();
     }
 
     public function detail_brg($id_barang)

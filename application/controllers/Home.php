@@ -43,7 +43,7 @@ class Home extends CI_Controller
         $max            = strlen($_GET['max']) > 0 ? $_GET['max'] : null;
         $data = array(
             'tittle' => 'Fiter',
-            'barang' => $this->m_home->get_filter($where,$min,$max),
+            'barang' => $this->m_home->get_filter($id_kategori,$id_bahan,$min,$max),
             'filter_kategori' => $this->m_kategori->get_all_data(),
             'filter_bahan' => $this->m_bahan->get_all_data(),
             'isi'   => 'v_filter'
