@@ -117,11 +117,19 @@
                                                     <?php 
                                                     $star = round($this->m_rating->getRating($value->id_barang),1);
                                                     if ($star>0) {
-                                                        for ($i = 1; $i < $star; $i++) {
+                                                        $s=0;
+                                                        for ($i = 1; $i <= $star; $i++) {
                                                             echo '<span class="fa fa-star text-warning"></span>';
+                                                            $s++;
                                                         }
                                                         if (($star*2)%2==1) {
                                                             echo '<span class="fa fa-star-half-o text-warning"></span>';   
+                                                            $s++;
+                                                        }
+                                                        if ($s < 5) {
+                                                            for ($i = 1; $i <= 5 - $s; $i++) {
+                                                            echo '<span class="fa fa-star text-secondary"></span>';   
+                                                            }
                                                         }
                                                     }else{
                                                         echo 'Not rated yet';
