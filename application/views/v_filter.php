@@ -40,7 +40,11 @@
         <div class="card card-solid mt-2 mb-2">
             <div class="card-body pb-0">
                 <div class="row">
-                    <?php foreach ($barang as $key => $value) { ?>
+                    <?php 
+                    $product_shown=array();
+                    foreach ($barang as $key => $value) {
+                        $product_shown[]=$value->id_barang;
+                     ?>
                         <div class="col-sm-6 col-xs-12">
                             <?php
                             echo form_open('belanja/add');
@@ -88,14 +92,30 @@
         <div class="card  mt-2 mb-2">
             <div class="card-header" id="headingOne">
                 <h5 class="mb-0">
-                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         Collaborative Filtering
-                    </button>
                 </h5>
             </div>
             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <th>Nama\Rating</th>
+                            <?php foreach ($product_shown as $ps => $item): ?>
+                                <th class="text-center"><?php echo $this->m_barang->get_data($item)->nama_barang;?></th>
+                            <?php endforeach ?>
+                        </thead>
+                        <tbody>
+                                <?php $person = $this->m_rating->getAllUsers();
+                                foreach ($person as $cust): ?>
+                                <tr>
+                                    <td><?php echo ucwords($cust->user) ?></td>
+                                    <?php foreach ($product_shown as $item): ?>
+                                        <td class="text-center"><?php echo $this->m_rating->getCoordinates($cust->user,$item); ?></td>
+                                <?php endforeach; ?>
+                                </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

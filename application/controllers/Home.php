@@ -12,6 +12,7 @@ class Home extends CI_Controller
         $this->load->model('m_bahan');
         $this->load->model('m_kategori');
         $this->load->model('m_rating');
+        $this->load->model('m_barang');
 
         $this->load->helper('url');
 

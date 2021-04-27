@@ -12,6 +12,14 @@ class M_rating extends CI_Model
         $this->db->insert('tb_rating', $data);
     }
 
+    public function getAllUsers(){
+        return $this->db->query('SELECT DISTINCT user from tb_rating ORDER BY user asc')->result();
+    }
+    public function getCoordinates($user,$id_barang){
+        return @$this->db->select('rating')->from('tb_rating')->where("id_barang",$id_barang)->where("user",$user)->get()->row()->rating;
+    }
+
+
     // Fetch records
     public function getAllPosts($id_pelanggan)
     {
