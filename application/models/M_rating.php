@@ -11,7 +11,9 @@ class M_rating extends CI_Model
     {
         $this->db->insert('tb_rating', $data);
     }
-
+    public function getRating($id_barang){
+        return $this->db->select('avg(rating) as rating')->from('tb_rating')->where("id_barang",$id_barang)->get()->row()->rating;
+    }
     public function getAllUsers(){
         return $this->db->query('SELECT DISTINCT user from tb_rating ORDER BY user asc')->result();
     }

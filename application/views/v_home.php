@@ -113,6 +113,21 @@
                                     <ul class="ml-4 mb-0 fa-ul text-muted">
                                         <li class="medium"><span class="fa-li "><i class="fas fa-wallet"></i></span><span class="badge bg-success bg-m">Rp. <?= number_format($value->harga, 0); ?></span></li>
                                         <li class="medium"><span class="fa-li"><i class="fas fa-layer-group"></i></span><?= $value->nama_bahan; ?></li>
+                                        <li>
+                                                    <?php 
+                                                    $star = round($this->m_rating->getRating($value->id_barang),1);
+                                                    if ($star>0) {
+                                                        for ($i = 1; $i < $star; $i++) {
+                                                            echo '<span class="fa fa-star text-warning"></span>';
+                                                        }
+                                                        if (($star*2)%2==1) {
+                                                            echo '<span class="fa fa-star-half-o text-warning"></span>';   
+                                                        }
+                                                    }else{
+                                                        echo 'Not rated yet';
+                                                    }
+                                                    ?>
+                                                </li>
                                     </ul>
                                 </div>
                             </div>
