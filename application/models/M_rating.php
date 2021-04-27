@@ -7,6 +7,10 @@ class M_rating extends CI_Model
     {
         parent::__construct();
     }
+    public function add($data)
+    {
+        $this->db->insert('tb_rating', $data);
+    }
 
     // Fetch records
     public function getAllPosts($id_pelanggan)
@@ -70,7 +74,13 @@ class M_rating extends CI_Model
 
         return $posts_arr;
     }
-
+    public function viewRating($id_barang)
+    {
+        $this->db->select('*');
+        $this->db->from('tb_rating');
+        $this->db->where("id_barang", $id_barang);
+        return $this->db->get()->result();
+    }
     // Save user rating
     public function userRating($id_pelanggan, $id_barang, $rating)
     {

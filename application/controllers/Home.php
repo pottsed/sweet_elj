@@ -51,6 +51,18 @@ class Home extends CI_Controller
         );
         $this->load->view('layout/v_wrapper_frontend', $data, FALSE);
     }
+    public function comment($id_barang)
+    {
+         $data = array(
+            'id_barang' => $id_barang,
+            'user'      => $this->input->post('user'),
+            'rating'    => $this->input->post('rating'),
+            'comment'   => $this->input->post('comment')
+        );
+        $this->m_rating->add($data);
+        $this->session->set_flashdata('pesan', 'Data Berhasil Ditambahkan !');
+        redirect('home/detail_brg/'.$id_barang, 'refresh');
+    }
 
     public function kategori($id_kategori)
     {
@@ -82,14 +94,10 @@ class Home extends CI_Controller
             'tittle' => 'Detail Barang',
             'gambar' => $this->m_home->gambar_brg($id_barang),
             'barang' => $this->m_home->detail_brg($id_barang),
+            'rating' => $this->m_rating->viewRating($id_barang),
             'isi'   => 'v_detail'
 
         );
-        // Userid
-        $userid = $this->session->userdata('id_pelanggan');
-
-        // Fetch all records
-        $data['posts'] = $this->m_rating->getAllPosts($userid);
         $this->load->view('layout/v_wrapper_frontend', $data, FALSE);
     }
 
