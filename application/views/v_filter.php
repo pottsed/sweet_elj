@@ -110,7 +110,7 @@
                         </div>
                     <?php } ?>
                 </div>
-            </div>
+            </div>]\
         </div>
         <?php 
         error_reporting(0);
@@ -148,7 +148,7 @@
                                             ?>
                                         <?php endforeach ?>
                                         <th>
-                                            <?php echo round(array_sum($user_avg[$cust->user])/count($user_avg[$cust->user]),2) ?>
+                                            <?php $rerata_user[$cust->user]=round(array_sum($user_avg[$cust->user])/count($user_avg[$cust->user]),2); echo $rerata_user[$cust->user]; ?>
                                         </th>
                                     </tr>
                                 <?php endforeach ?>
@@ -161,12 +161,70 @@
                                     $sum_item_avg   = array_sum($item_avg[$item]) === null ? 0 : array_sum($item_avg[$item]);
                                     ?>
                                     <th class="text-center">
-                                        <?php echo round($sum_item_avg/$count_item_avg,2) ?>
+                                        <?php $rerata_item[$item] = round($sum_item_avg/$count_item_avg,2); echo $rerata_item[$item] ?>
                                     </th>
                                 <?php endforeach ?>
                                 <th></th>
                             </tfoot>
                         </table>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <img src="<?php echo base_url('assets/foto/Collaborative filtering.png') ?>" style="max-width: 300px">
+                        </div>
+                        <ul class="list-unstyled">
+                            <?php foreach ($product_shown as $itema): ?>
+                                <?php foreach ($product_shown as $itemb):
+                                    if ($itema!==$itemb){ 
+                                        $string['full']="";
+                                        ?>
+                                        <li>
+                                            <small>
+                                                <i>sim(<b><?php echo $this->m_barang->get_data($itema)->nama_barang;?></b>,<b><?php echo $this->m_barang->get_data($itemb)->nama_barang;?></b>)</i> = 
+                                            </small>
+                                            <?php 
+                                            $person = $this->m_rating->getAllUsers();
+                                            $string['top']="";
+                                            $string['bottom']="";
+                                            $plus=0;
+                                            foreach ($person as $cust):
+                                                $topFirst     = $user_avg[$cust->user][$itema]==null ? 0 : $user_avg[$cust->user][$itema];//itemA  
+                                                $topLast     = $user_avg[$cust->user][$itemb]==null ? 0 : $user_avg[$cust->user][$itemb];//$itemB
+                                                $topAvg     = $rerata_user[$cust->user]==null ? 0 : $rerata_user[$cust->user];//rerata
+                                                $top[] = ($topFirst-$topAvg)*($topLast-$topAvg);
+                                                $string['top'] .= $plus > 0 ? " + ":"";
+                                                $string['top'] .=  " (".$topFirst."-".$topAvg.")(".$topLast."-".$topAvg.")";
+                                                $plus++;
+                                            endforeach;
+                                            $string['bottom_f'] = "√";
+                                            $string['bottom_l'] =  q
+                                            $plus_f=0;
+                                            $plus_l=0;
+
+                                            foreach ($person as $cust):
+                                                if (isset($user_avg[$cust->user][$itema])) {
+                                                    $div['bottom_f'][] = pow(($user_avg[$cust->user][$itema]-$rerata_item[$itema]),2);
+                                                    $string['bottom_f'] .= $plus_f > 0 ? " + ":"";
+                                                    $string['bottom_f'] .= "(".$user_avg[$cust->user][$itema]."-".$rerata_item[$itema].")<sup>2</sup>";
+                                                    $plus_f++;
+                                                }
+                                                if (isset($user_avg[$cust->user][$itemb])) {
+                                                    $div['bottom_l'][] = pow(($user_avg[$cust->user][$itemb]-$rerata_item[$itema]),2);
+                                                    $string['bottom_l'] .= $plus_l > 0 ? " + ":"";
+                                                    $string['bottom_l'] .= "(".$user_avg[$cust->user][$itemb]."-".$rerata_item[$itemb].")<sup>2</sup>";
+                                                    $plus_l++;
+                                                }
+                                            endforeach;
+                                            $bottom     = sqrt(array_sum($div['bottom_f'])) * sqrt(array_sum($div['bottom_l']));
+                                            $string['bottom'] = $string['bottom_f'].$string['bottom_l'];
+                                            echo $string['bottom'];
+                                            ?>
+                                        </li>
+                                        <?php 
+                                    }
+                                endforeach ?>
+                            <?php endforeach ?>
+                        </ul>
                     </div>
                 </div>
             </div>

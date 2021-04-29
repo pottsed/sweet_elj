@@ -29,9 +29,6 @@
                         echo $this->session->flashdata('error');
                         echo '</div>';
                     }
-
-
-
                     echo form_open('pelanggan/login'); ?>
                     <?php echo form_error('email', '<div class="text-danger small ml-2">', '</div>') ?>
                     <div class="input-group mb-3">
