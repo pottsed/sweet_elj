@@ -44,7 +44,7 @@
                     $product_shown=array();
                     foreach ($barang as $key => $value) {
                         $product_shown[]=$value->id_barang;
-                     ?>
+                        ?>
                         <div class="col-sm-6 col-xs-12">
                             <?php
                             echo form_open('belanja/add');
@@ -83,7 +83,7 @@
                                                         }
                                                         if ($s < 5) {
                                                             for ($i = 1; $i <= 5 - $s; $i++) {
-                                                            echo '<span class="fa fa-star text-secondary"></span>';   
+                                                                echo '<span class="fa fa-star text-secondary"></span>';   
                                                             }
                                                         }
                                                     }else{
@@ -112,55 +112,64 @@
                 </div>
             </div>
         </div>
+        <?php 
+        error_reporting(0);
+        ?>
         <div class="card  mt-2 mb-2">
             <div class="card-header" id="headingOne">
                 <h5 class="mb-0">
-                        Collaborative Filtering
+                    Collaborative Filtering
                 </h5>
             </div>
             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <th>Nama\Rating</th>
-                            <?php foreach ($product_shown as $ps => $item): ?>
-                                <th class="text-center"><?php echo $this->m_barang->get_data($item)->nama_barang;?></th>
-                            <?php endforeach ?>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <th>Nama\Rating</th>
+                                <?php foreach ($product_shown as $ps => $item): ?>
+                                    <th class="text-center"><?php echo $this->m_barang->get_data($item)->nama_barang;?></th>
+                                <?php endforeach ?>
+                                <th>Rerata</th>
+                            </thead>
+                            <tbody>
                                 <?php $person = $this->m_rating->getAllUsers();
                                 foreach ($person as $cust): ?>
-                                <tr>
-                                    <td><?php echo ucwords($cust->user) ?></td>
-                                    <?php foreach ($product_shown as $item): ?>
-                                        <td class="text-center"><?php echo $this->m_rating->getCoordinates($cust->user,$item); ?></td>
-                                <?php endforeach; ?>
-                                </tr>
-                            <?php endforeach ?>
-                        </tbody>
-                    </table>
+                                    <tr>
+                                        <th><?php echo ucwords($cust->user) ?></th>
+                                        <?php foreach ($product_shown as $item): ?>
+                                            <td class="text-center"><?php echo $this->m_rating->getCoordinates($cust->user,$item); ?></td>
+                                            <?php 
+                                            $rate=$this->m_rating->getCoordinates($cust->user,$item);
+                                            if ($rate!==null) {
+                                                $user_avg[$cust->user][$item]=$rate;
+                                                $item_avg[$item][$cust->user]=$rate;
+                                            }
+                                            ?>
+                                        <?php endforeach ?>
+                                        <th>
+                                            <?php echo round(array_sum($user_avg[$cust->user])/count($user_avg[$cust->user]),2) ?>
+                                        </th>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                            <tfoot>
+                                <th class="bg-dark">Total</th>
+                                <?php 
+                                foreach ($product_shown as $item):
+                                    $count_item_avg = count($item_avg[$item]) === null ? 0 : count($item_avg[$item]);
+                                    $sum_item_avg   = array_sum($item_avg[$item]) === null ? 0 : array_sum($item_avg[$item]);
+                                    ?>
+                                    <th class="text-center">
+                                        <?php echo round($sum_item_avg/$count_item_avg,2) ?>
+                                    </th>
+                                <?php endforeach ?>
+                                <th></th>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- SweetAlert2 -->
-<script src="<?= base_url(); ?>template/plugins/sweetalert2/sweetalert2.min.js"></script>
-<!-- Page specific script -->
-<script>
-    $(function() {
-        var Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-        });
-        $('.swalDefaultSuccess').click(function() {
-            Toast.fire({
-                icon: 'success',
-                title: 'Tas Berhasil Ditambahkan ke Keranjang !'
-            })
-        });
-    });
-</script>
