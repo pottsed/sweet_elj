@@ -197,11 +197,12 @@
                                                 $plus++;
                                             endforeach;
                                             $string['bottom_f'] = "√";
-                                            $string['bottom_l'] =  q
+                                            $string['bottom_l'] = "√";
                                             $plus_f=0;
                                             $plus_l=0;
 
                                             foreach ($person as $cust):
+
                                                 if (isset($user_avg[$cust->user][$itema])) {
                                                     $div['bottom_f'][] = pow(($user_avg[$cust->user][$itema]-$rerata_item[$itema]),2);
                                                     $string['bottom_f'] .= $plus_f > 0 ? " + ":"";
@@ -209,18 +210,31 @@
                                                     $plus_f++;
                                                 }
                                                 if (isset($user_avg[$cust->user][$itemb])) {
-                                                    $div['bottom_l'][] = pow(($user_avg[$cust->user][$itemb]-$rerata_item[$itema]),2);
+                                                    $div['bottom_l'][] = pow(($user_avg[$cust->user][$itemb]-$rerata_item[$itemb]),2);
                                                     $string['bottom_l'] .= $plus_l > 0 ? " + ":"";
                                                     $string['bottom_l'] .= "(".$user_avg[$cust->user][$itemb]."-".$rerata_item[$itemb].")<sup>2</sup>";
                                                     $plus_l++;
                                                 }
                                             endforeach;
                                             $bottom     = sqrt(array_sum($div['bottom_f'])) * sqrt(array_sum($div['bottom_l']));
-                                            $string['bottom'] = $string['bottom_f'].$string['bottom_l'];
-                                            echo $string['bottom'];
+                                            $string['bottom'] = $string['bottom_f']."  ".$string['bottom_l'];
                                             ?>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <span class='text-center' style='border-bottom:1px solid black'><?php echo $string['top'] ?></span><br><span class='text-center'><?php echo $string['bottom'] ?></span>
+                                                    </td>
+                                                    <td>&nbsp;=&nbsp;</td>
+                                                    <td>
+                                                        <span class='text-center' style='border-bottom:1px solid black'><?php echo round(array_sum($top),2) ?></span><br><span class='text-center'><?php echo round(sqrt(array_sum($div['bottom_f'])*array_sum($div['bottom_l'])),2) ?></span>
+                                                    </td>
+                                                    <td>&nbsp;=&nbsp;</td>
+                                                    <td><?php echo round(array_sum($top)/$bottom,2) ?></td>
+                                                </tr>
+                                            </table>
                                         </li>
                                         <?php 
+                                        unset($top);unset($div);unset($bottom);  
                                     }
                                 endforeach ?>
                             <?php endforeach ?>
