@@ -110,7 +110,7 @@
                         </div>
                     <?php } ?>
                 </div>
-            </div>]\
+            </div>
         </div>
         <?php 
         error_reporting(0);
