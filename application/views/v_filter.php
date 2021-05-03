@@ -55,7 +55,7 @@ foreach ($product_shown as $itema):
                 $best_item[] = $itemb;
                 $best = array_sum($top)/$bottom;
             } 
-            unset($top);unset($div);unset($bottom);unset($string); 
+            unset($top);unset($div);unset($bottom);unset($string);
         }
     endforeach;
 endforeach;
@@ -363,14 +363,25 @@ endforeach;
                                             <table>
                                                 <tr>
                                                     <td>
-                                                        <span class='text-center' style='border-bottom:1px solid black'><?php echo $string['top'] ?></span><br><span class='text-center'><?php echo $string['bottom'] ?></span>
+                                                        <small>
+
+                                                            <span class='text-center' style='border-bottom:1px solid black'><?php echo $string['top'] ?></span><br><span class='text-center'><?php echo $string['bottom'] ?></span>
+                                                        </small>
                                                     </td>
                                                     <td>&nbsp;=&nbsp;</td>
                                                     <td>
-                                                        <span class='text-center' style='border-bottom:1px solid black'><?php echo round(array_sum($top),2) ?></span><br><span class='text-center'><?php echo round(sqrt(array_sum($div['bottom_f'])*array_sum($div['bottom_l'])),2) ?></span>
+                                                        <small>
+                                                            
+                                                            <span class='text-center' style='border-bottom:1px solid black'><?php echo round(array_sum($top),2) ?></span><br><span class='text-center'><?php echo round(sqrt(array_sum($div['bottom_f'])*array_sum($div['bottom_l'])),2) ?></span>
+                                                        </small>
                                                     </td>
                                                     <td>&nbsp;=&nbsp;</td>
                                                     <td><?php echo round(array_sum($top)/$bottom,2) ?></td>
+                                                    <td>
+                                                        <?php if (array_sum($top)/$bottom == $best): ?>
+                                                            <small class="badge badge-danger">Recommended</small>
+                                                        <?php endif ?>
+                                                    </td>
                                                 </tr>
                                             </table>
                                         </li>
