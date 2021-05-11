@@ -10,8 +10,8 @@ foreach ($person as $cust):
     foreach ($product_shown as $item): 
         $rate=$this->m_rating->getCoordinates($cust->user,$item);
         if ($rate!==null) {
-            $user_avg[$cust->user][$item]= $rate;
-            $item_avg[$item][$cust->user]= $rate;
+            $user_avg[$cust->user][$item] = $rate;
+            $item_avg[$item][$cust->user] = $rate;
         }
     endforeach;
     $rerata_user[$cust->user]=round(array_sum($user_avg[$cust->user])/count($user_avg[$cust->user]),2);
@@ -50,6 +50,7 @@ foreach ($product_shown as $itema):
                 $best_item[] = $itema;
                 $best_item[] = $itemb;
                 $best = round(array_sum($top)/$bottom,2);
+                $best = $best > 1 ? 1 : $best;
             } 
             unset($top);unset($div);unset($bottom);unset($string);
         }
@@ -446,7 +447,7 @@ endforeach;
                                             <td>&nbsp;=&nbsp;</td>
                                             <td><?php echo round(array_sum($top)/$bottom,2) ?></td>
                                             <td>
-                                                <?php if (round(array_sum($top)/$bottom,2) == $best): ?>
+                                                <?php if (round(array_sum($top)/$bottom,2) == $best or array_sum($top)/$bottom >= 1): ?>
                                                     <small class="badge badge-danger">Recommended</small>
                                                 <?php endif ?>
                                             </td>
