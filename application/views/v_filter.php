@@ -42,8 +42,8 @@ foreach ($product_shown as $itema):
                 $plus_l++;
             endforeach;
             $bottom     = sqrt(array_sum($div['bottom_f'])) * sqrt(array_sum($div['bottom_l']));
-            if ($bottom > 0 && array_sum($top)/$bottom >= $best) {
-                if (array_sum($top)/$bottom !== $best) {
+            if ($bottom > 0 and round(array_sum($top)/$bottom,2) >= $best) {
+                if (round(array_sum($top)/$bottom,2) !== $best) {
                     unset($best_item);
                     unset($best);
                 }
@@ -55,6 +55,7 @@ foreach ($product_shown as $itema):
         }
     endforeach;
 endforeach;
+// echo $best_item;
 // print_r($best_item);exit;
 ?>
 <div class="col-lg-12 p-0 row">
@@ -432,7 +433,14 @@ endforeach;
                                             <td>&nbsp;=&nbsp;</td>
                                             <td>
                                                 <small>
-                                                    <span class='text-center' style='border-bottom:1px solid black'><?php echo round(array_sum($top),2) ?></span><br><span class='text-center'><?php echo round(sqrt(array_sum($div['bottom_f'])*array_sum($div['bottom_l'])),2) ?></span>
+                                                    <span class='text-center' style='border-bottom:1px solid black'>
+
+                                                        <?php echo round(array_sum($top),2) ?>
+                                                    </span>
+                                                    <br>
+                                                    <span class='text-center'>
+                                                        <?php echo round(sqrt(array_sum($div['bottom_f'])*array_sum($div['bottom_l'])),2) ?>
+                                                    </span>
                                                 </small>
                                             </td>
                                             <td>&nbsp;=&nbsp;</td>
